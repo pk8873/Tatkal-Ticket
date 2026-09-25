@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Railway Booking Assistant - Local Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; }
+    label { display:block; margin:12px 0; }
+    input, select { width:100%; padding:10px; box-sizing:border-box; }
+  </style>
+</head>
+<body>
+  <h1>🚆 Local Booking Form Demo</h1>
+  <p>This page is only for learning how a Chrome extension can fill ordinary HTML form fields.</p>
+  <label>Source <input id="source"></label>
+  <label>Destination <input id="destination"></label>
+  <label>Travel date <input id="travelDate" type="date"></label>
+  <label>Train <input id="train"></label>
+  <label>Boarding <input id="boarding"></label>
+  <label>Quota
+    <select id="quota">
+      <option>GENERAL</option>
+      <option>TATKAL</option>
+      <option>PREMIUM TATKAL</option>
+    </select>
+  </label>
+</body>
+</html>
