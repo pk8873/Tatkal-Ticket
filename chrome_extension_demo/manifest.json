@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Railway Booking Assistant - Local Demo",
+  "version": "1.0.0",
+  "description": "Learning demo for user-triggered form autofill on localhost.",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": ["http://localhost/*", "http://127.0.0.1/*"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://localhost/*", "http://127.0.0.1/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
