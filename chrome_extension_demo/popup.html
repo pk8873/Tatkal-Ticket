@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Railway Assistant Demo</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <h2>🚆 Booking Assistant</h2>
+  <p class="note">Local learning demo only</p>
+
+  <label>Source <input id="source" value="Patna"></label>
+  <label>Destination <input id="destination" value="New Delhi"></label>
+  <label>Travel date <input id="travelDate" type="date"></label>
+  <label>Train <input id="train" value=""></label>
+  <label>Boarding <input id="boarding" value=""></label>
+
+  <label>Quota
+    <select id="quota">
+      <option>GENERAL</option>
+      <option>TATKAL</option>
+      <option>PREMIUM TATKAL</option>
+    </select>
+  </label>
+
+  <button id="save">💾 Save Data</button>
+  <button id="open">🌐 Open Local Demo</button>
+  <button id="fill">⚡ Fill Current Demo Page</button>
+
+  <p id="status"></p>
+  <script src="popup.js"></script>
+</body>
+</html>
