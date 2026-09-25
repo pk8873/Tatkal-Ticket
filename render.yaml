@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tatkal-ticket-bot
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBHOOK_URL
+        sync: false
+      - key: DATABASE_URL
+        value: sqlite:///./tatkal_ticket.db
+      - key: ADMIN_TELEGRAM_ID
+        sync: false
