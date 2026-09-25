@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+
 from sqlalchemy import create_engine, String, Integer, DateTime, Text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
@@ -8,11 +9,14 @@ connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite")
 engine = create_engine(DATABASE_URL, connect_args=connect_args, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
+
 class Base(DeclarativeBase):
     pass
 
+
 class Booking(Base):
     __tablename__ = "bookings"
+
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     telegram_id: Mapped[str] = mapped_column(String(64), index=True)
     username: Mapped[str | None] = mapped_column(String(255), nullable=True)
@@ -26,5 +30,18 @@ class Booking(Base):
     passengers: Mapped[str] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(40), default="READY_FOR_MANUAL_BOOKING")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
+
+class PassengerProfile(Base):
+    __tablename__ = "passenger_profiles"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    telegram_id: Mapped[str] = mapped_column(String(64), index=True)
+    name: Mapped[str] = mapped_column(String(120))
+    age: Mapped[int] = mapped_column(Integer)
+    gender: Mapped[str] = mapped_column(String(20))
+    berth: Mapped[str] = mapped_column(String(40), default="No Preference")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+
 
 Base.metadata.create_all(engine)
