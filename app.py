@@ -3,7 +3,9 @@ import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
 from telegram import Update
+
 from bot import build_application
 from db import Base, engine
 
@@ -26,7 +28,6 @@ async def lifespan(app: FastAPI):
     else:
         webhook_endpoint = f"{webhook_url}/telegram/webhook"
 
-        # Replace any old/stale webhook configuration with this deployment URL.
         await telegram_app.bot.delete_webhook(drop_pending_updates=False)
         await telegram_app.bot.set_webhook(
             url=webhook_endpoint,
@@ -59,6 +60,48 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "healthy"}
+
+
+@app.get("/extension-demo", response_class=HTMLResponse)
+async def extension_demo():
+    return HTMLResponse(
+        """
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Railway Booking Assistant - Deployed Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; line-height: 1.5; }
+    label { display: block; margin: 12px 0; }
+    input, select { width: 100%; padding: 10px; box-sizing: border-box; }
+    .note { padding: 12px; border: 1px solid #ccc; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <h1>🚆 Deployed Booking Form Demo</h1>
+  <p class="note">
+    Learning demo only. The Chrome extension can fill these ordinary HTML
+    fields after you explicitly click its button. This page does not automate
+    IRCTC login, CAPTCHA, booking, or payment.
+  </p>
+  <label>Source <input id="source"></label>
+  <label>Destination <input id="destination"></label>
+  <label>Travel date <input id="travelDate" type="date"></label>
+  <label>Train <input id="train"></label>
+  <label>Boarding <input id="boarding"></label>
+  <label>Quota
+    <select id="quota">
+      <option>GENERAL</option>
+      <option>TATKAL</option>
+      <option>PREMIUM TATKAL</option>
+    </select>
+  </label>
+</body>
+</html>
+"""
+    )
 
 
 @app.post("/telegram/webhook")
