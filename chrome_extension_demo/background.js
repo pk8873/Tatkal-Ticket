@@ -5,10 +5,16 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type !== "OPEN_DEMO") return;
 
-  // Open the actual local form page instead of the directory listing.
-  chrome.tabs.create({ url: "http://localhost:8000/demo/" })
-    .then(() => sendResponse({ ok: true }))
-    .catch((error) => sendResponse({ ok: false, error: String(error) }));
+  const localDemo = "http://localhost:8000/demo/";
+  const deployedDemo = "https://tatkal-ticket-bot.onrender.com/extension-demo";
+
+  chrome.tabs.create({ url: localDemo })
+    .then(() => sendResponse({ ok: true, url: localDemo }))
+    .catch(() => {
+      chrome.tabs.create({ url: deployedDemo })
+        .then(() => sendResponse({ ok: true, url: deployedDemo }))
+        .catch((error) => sendResponse({ ok: false, error: String(error) }));
+    });
 
   return true;
 });
