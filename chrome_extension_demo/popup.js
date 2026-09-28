@@ -33,8 +33,14 @@ document.getElementById("open").addEventListener("click", () => {
 document.getElementById("fill").addEventListener("click", async () => {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-  if (!tab?.url?.startsWith("http://localhost/") &&
-      !tab?.url?.startsWith("http://127.0.0.1/")) {
+  // Allow localhost with any port, such as localhost:8000.
+  if (
+    !tab?.url ||
+    !(
+      tab.url.startsWith("http://localhost:") ||
+      tab.url.startsWith("http://127.0.0.1:")
+    )
+  ) {
     setStatus("Open the local demo page first.");
     return;
   }
