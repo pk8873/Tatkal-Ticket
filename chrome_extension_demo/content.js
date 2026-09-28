@@ -18,18 +18,13 @@ function fillDemoForm(data) {
     boarding: setField("#boarding", data.boarding)
   };
 
-  if (data.quota) {
-    const quota = document.querySelector("#quota");
-    if (quota) {
-      quota.value = data.quota;
-      quota.dispatchEvent(new Event("input", { bubbles: true }));
-      quota.dispatchEvent(new Event("change", { bubbles: true }));
-      results.quota = true;
-    } else {
-      results.quota = false;
-    }
+  const quota = document.querySelector("#quota");
+  if (quota) {
+    results.quota = data.quota
+      ? setField("#quota", data.quota)
+      : true;
   } else {
-    results.quota = true;
+    results.quota = false;
   }
 
   return results;
@@ -41,12 +36,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   try {
     const results = fillDemoForm(message.data || {});
     const filledCount = Object.values(results).filter(Boolean).length;
+
     sendResponse({
       ok: filledCount > 0,
       results,
       filledCount
     });
   } catch (error) {
-    sendResponse({ ok: false, error: String(error) });
+    sendResponse({
+      ok: false,
+      error: String(error)
+    });
   }
 });
