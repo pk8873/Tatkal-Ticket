@@ -22,9 +22,14 @@ function fillDemoForm(data) {
     const quota = document.querySelector("#quota");
     if (quota) {
       quota.value = data.quota;
+      quota.dispatchEvent(new Event("input", { bubbles: true }));
       quota.dispatchEvent(new Event("change", { bubbles: true }));
       results.quota = true;
+    } else {
+      results.quota = false;
     }
+  } else {
+    results.quota = true;
   }
 
   return results;
@@ -33,6 +38,15 @@ function fillDemoForm(data) {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type !== "FILL_DEMO_FORM") return;
 
-  const results = fillDemoForm(message.data || {});
-  sendResponse({ ok: true, results });
+  try {
+    const results = fillDemoForm(message.data || {});
+    const filledCount = Object.values(results).filter(Boolean).length;
+    sendResponse({
+      ok: filledCount > 0,
+      results,
+      filledCount
+    });
+  } catch (error) {
+    sendResponse({ ok: false, error: String(error) });
+  }
 });
