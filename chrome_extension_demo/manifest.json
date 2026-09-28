@@ -1,10 +1,14 @@
 {
   "manifest_version": 3,
   "name": "Railway Booking Assistant - Local Demo",
-  "version": "1.0.1",
-  "description": "Learning demo for user-triggered form autofill on localhost.",
+  "version": "1.1.0",
+  "description": "Learning demo for user-triggered form autofill on localhost and the deployed demo page.",
   "permissions": ["storage", "activeTab", "scripting"],
-  "host_permissions": ["http://localhost/*", "http://127.0.0.1/*"],
+  "host_permissions": [
+    "http://localhost/*",
+    "http://127.0.0.1/*",
+    "https://tatkal-ticket-bot.onrender.com/*"
+  ],
   "action": {
     "default_popup": "popup.html"
   },
@@ -13,7 +17,11 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://localhost/*", "http://127.0.0.1/*"],
+      "matches": [
+        "http://localhost/*",
+        "http://127.0.0.1/*",
+        "https://tatkal-ticket-bot.onrender.com/*"
+      ],
       "js": ["content.js"],
       "run_at": "document_idle"
     }
